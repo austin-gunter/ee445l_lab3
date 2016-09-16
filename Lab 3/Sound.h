@@ -1,0 +1,1 @@
+void SpeakerInit(void);
