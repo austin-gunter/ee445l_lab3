@@ -31,13 +31,23 @@ void ST7735_Line(uint16_t x1, uint16_t y1, uint16_t x2, uint16_t y2, uint16_t co
 			x2 = temp;
 	}
 	*/
-	if(x1 == x2){																				// If line is a vertical line
+	if(x1 == x2){															// If line is a vertical line
+		if(y1 > y2){
+			uint32_t temp = y1;
+			y1 = y2;
+			y2 = temp;
+		}
 			for(int i = y1; i <= y2; i++){
 					ST7735_DrawPixel(x1, i, color);
 			}
 			return;
 	}	
-	if(y1 == y2){																				// If line is a horizontal line
+	if(y1 == y2){															// If line is a horizontal line
+		if(y1 > y2){
+			uint32_t temp = x1;
+			x1 = x2;
+			x2 = temp;
+		}
 			for(int i = x1; i <= x2; i++){
 					ST7735_DrawPixel(i, y1, color);
 			}
