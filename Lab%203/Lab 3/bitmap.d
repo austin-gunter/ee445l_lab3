@@ -1,0 +1,1 @@
+.\bitmap.o: Bitmap.c
