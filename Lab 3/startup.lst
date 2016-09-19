@@ -1092,7 +1092,7 @@ ARM Macro Assembler    Page 17
 Command Line: --debug --xref --cpu=Cortex-M4 --apcs=interwork --depend=.\startu
 p.d -o.\startup.o -I"D:\Program Files (x86)\Keil\ARM\RV31\INC" -I"D:\Program Fi
 les (x86)\Keil\ARM\CMSIS\Include" -I"D:\Program Files (x86)\Keil\ARM\Inc\Lumina
-ry" --predefine="__EVAL SETA 1" --list=.\startup.lst startup.s
+ry" --list=.\startup.lst startup.s
 
 
 
@@ -2539,4 +2539,4 @@ Symbol: __use_two_region_memory
       None
 Comment: __use_two_region_memory unused
 2 symbols
-480 symbols in table
+479 symbols in table

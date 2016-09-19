@@ -31,7 +31,7 @@ void LCDArrayInit(char Time[], char Alarm[], uint32_t Cursor[]){
 	Alarm[4] = 0x30;
 	Time[5] = 0x20;						// space
 	Alarm[5] = 0x20;
-	Time[6] = 0x61;						// a. p is 0x70
+	Time[6] = 0x61;						// a or p (a = 0x61, p = 0x70)
 	Alarm[6] = 0x61;
 	Time[7] = 0x6D;						// m
 	Alarm[7] = 0x6D;
@@ -66,7 +66,6 @@ void LCDDisplayInit(char Time[], char Alarm[], uint32_t Cursor[]){
 	
 	ST7735_DrawBitmap(14, 155, ClockFace_24bit, 100, 100);
 	ST7735_Line(64, 106, 64, 73, ST7735_GREEN);
-//	ST7735_Line(64, 106, 97, 103, ST7735_GREEN);				// 12:14
   ST7735_Line(64, 106, 64, 90, ST7735_RED);
 	
 }

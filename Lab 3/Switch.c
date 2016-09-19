@@ -32,6 +32,6 @@ void SwitchesInit(void){
 	GPIO_PORTB_IEV_R &= ~0x0F;				// falling edge
 	GPIO_PORTB_ICR_R = 0x0F;					// clear flags 0,1,2,3
 	GPIO_PORTB_IM_R |= 0x0F;					// arm interrupt on PB0,1,2,3
-	NVIC_PRI0_R = (NVIC_PRI0_R&0xFFFF00FF)|0x00002000;		// Port B is priority 1
+	NVIC_PRI0_R = (NVIC_PRI0_R&0xFFFF00FF)|0x00004000;		// Port B is priority 2
 	NVIC_EN0_R |= 0x02;								// enable interrupt 1 on NVIC
 }
