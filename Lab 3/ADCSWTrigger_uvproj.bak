@@ -416,16 +416,6 @@
               <FilePath>.\PLL.c</FilePath>
             </File>
             <File>
-              <FileName>Timer1.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Lab 2\Timer1.c</FilePath>
-            </File>
-            <File>
-              <FileName>Timer1.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\Lab 2\Timer1.h</FilePath>
-            </File>
-            <File>
               <FileName>LineDrawer.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\LineDrawer.c</FilePath>
@@ -464,6 +454,16 @@
               <FileName>Timer.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\Timer.c</FilePath>
+            </File>
+            <File>
+              <FileName>Timer1.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Timer1.c</FilePath>
+            </File>
+            <File>
+              <FileName>Timer1.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\Timer1.h</FilePath>
             </File>
           </Files>
         </Group>

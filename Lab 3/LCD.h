@@ -6,3 +6,4 @@
 
 void LCDArrayInit(char *Time, char *Alarm, uint32_t *Cursor);
 void LCDDisplayInit(char *Time, char *Alarm, uint32_t *Cursor);
+void DrawHands(uint32_t MinuteX[], uint32_t MinuteY[], uint32_t HourX[], uint32_t HourY[], uint32_t HourCounter, uint32_t MinuteCounter, uint32_t PreviousHour, uint32_t PreviousMinute);

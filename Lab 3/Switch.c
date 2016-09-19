@@ -14,54 +14,24 @@
 // 		because reading the register actually clears it.
 
 
-
-void EditSwitchInit(void){
+//**************************************************
+// Initializes switches to Port B
+// PB0: Edit Switch
+// PB1: Cycle Switch
+// PB2: Increment Switch
+// PB3: Arm Switch
+//***************************************************
+void SwitchesInit(void){
 	volatile unsigned long delay;
-  SYSCTL_RCGC2_R |= 0x00000001;     // 1) activate clock for Port A
+  SYSCTL_RCGC2_R |= 0x00000002;     // activate clock for Port B
   delay = SYSCTL_RCGC2_R;           // allow time for clock to start
-                                    // 2) no need to unlock GPIO Port B
-  GPIO_PORTA_AMSEL_R &= ~0x20;      // 3) disable analog on PA5
-  GPIO_PORTA_PCTL_R &= ~0x00F00000; // 4) PCTL GPIO on PA5
-  GPIO_PORTA_DIR_R &= ~0x20;        // 5) direction PA5 input
-  GPIO_PORTA_AFSEL_R &= ~0x20;      // 6) PA5 regular port function
-  GPIO_PORTA_DEN_R |= 0x20;         // 7) enable PA5 digital port
-}
-unsigned long EditSwitch_Input(void){
-   return PB0; // return 0x20(pressed) or 0(not pressed)
-}
-unsigned long EditSwitch_Input2(void){
-  return (GPIO_PORTA_DATA_R&0x20); // 0x20(pressed) or 0(not pressed)
-}
-void CycleSwitchInit(void){
-	volatile unsigned long delay;
-  SYSCTL_RCGC2_R |= 0x00000001;     // 1) activate clock for Port A
-  delay = SYSCTL_RCGC2_R;           // allow time for clock to start
-                                    // 2) no need to unlock GPIO Port B
-  GPIO_PORTA_AMSEL_R &= ~0x20;      // 3) disable analog on PA5
-  GPIO_PORTA_PCTL_R &= ~0x00F00000; // 4) PCTL GPIO on PA5
-  GPIO_PORTA_DIR_R &= ~0x20;        // 5) direction PA5 input
-  GPIO_PORTA_AFSEL_R &= ~0x20;      // 6) PA5 regular port function
-  GPIO_PORTA_DEN_R |= 0x20;         // 7) enable PA5 digital port
-	}
-void IncrementSwitchInit(void){
-	volatile unsigned long delay;
-  SYSCTL_RCGC2_R |= 0x00000001;     // 1) activate clock for Port A
-  delay = SYSCTL_RCGC2_R;           // allow time for clock to start
-                                    // 2) no need to unlock GPIO Port B
-  GPIO_PORTA_AMSEL_R &= ~0x20;      // 3) disable analog on PA5
-  GPIO_PORTA_PCTL_R &= ~0x00F00000; // 4) PCTL GPIO on PA5
-  GPIO_PORTA_DIR_R &= ~0x20;        // 5) direction PA5 input
-  GPIO_PORTA_AFSEL_R &= ~0x20;      // 6) PA5 regular port function
-  GPIO_PORTA_DEN_R |= 0x20;         // 7) enable PA5 digital port
-}
-void ArmSwitchInit(void){
-	volatile unsigned long delay;
-  SYSCTL_RCGC2_R |= 0x00000001;     // 1) activate clock for Port A
-  delay = SYSCTL_RCGC2_R;           // allow time for clock to start
-                                    // 2) no need to unlock GPIO Port B
-  GPIO_PORTA_AMSEL_R &= ~0x20;      // 3) disable analog on PA5
-  GPIO_PORTA_PCTL_R &= ~0x00F00000; // 4) PCTL GPIO on PA5
-  GPIO_PORTA_DIR_R &= ~0x20;        // 5) direction PA5 input
-  GPIO_PORTA_AFSEL_R &= ~0x20;      // 6) PA5 regular port function
-  GPIO_PORTA_DEN_R |= 0x20;         // 7) enable PA5 digital port
+	GPIO_PORTB_DIR_R &= ~0x0F;				// makes PB0,1,2,3 in
+	GPIO_PORTB_DEN_R |= 0x0F;					// enable digital I/O on PB0,1,2,3
+	GPIO_PORTB_IS_R &= ~0x0F;					// edge-sensitive
+	GPIO_PORTB_IBE_R &= ~0x0F;				// not both edges
+	GPIO_PORTB_IEV_R &= ~0x0F;				// falling edge
+	GPIO_PORTB_ICR_R = 0x0F;					// clear flags 0,1,2,3
+	GPIO_PORTB_IM_R |= 0x0F;					// arm interrupt on PB0,1,2,3
+	NVIC_PRI0_R = (NVIC_PRI0_R&0xFFFF00FF)|0x00002000;		// Port B is priority 1
+	NVIC_EN0_R |= 0x02;								// enable interrupt 1 on NVIC
 }
