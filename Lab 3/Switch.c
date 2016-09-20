@@ -7,7 +7,7 @@
 #define PB1								(*((volatile uint32_t *)0x40005008))
 #define PB2								(*((volatile uint32_t *)0x40005010))
 #define PB3								(*((volatile uint32_t *)0x40005020))
-	
+
 
 
 // In handler, read button Data register & assign it to a variable. From then on, read the variable instead of the register,

@@ -1,2 +1,2 @@
 .\handcoordinates.o: HandCoordinates.c
-.\handcoordinates.o: D:\Program Files (x86)\Keil\ARM\ARMCC\bin\..\include\stdint.h
+.\handcoordinates.o: C:\Keil\ARM\ARMCC\bin\..\include\stdint.h

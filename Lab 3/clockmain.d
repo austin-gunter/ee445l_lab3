@@ -1,10 +1,11 @@
 .\clockmain.o: ClockMain.c
-.\clockmain.o: D:\Program Files (x86)\Keil\ARM\ARMCC\bin\..\include\stdint.h
-.\clockmain.o: D:\Program Files (x86)\Keil\ARM\ARMCC\bin\..\include\stdio.h
+.\clockmain.o: C:\Keil\ARM\ARMCC\bin\..\include\stdint.h
+.\clockmain.o: C:\Keil\ARM\ARMCC\bin\..\include\stdio.h
+.\clockmain.o: C:\Keil\ARM\ARMCC\bin\..\include\string.h
 .\clockmain.o: PLL.h
 .\clockmain.o: Switch.h
 .\clockmain.o: LCD.h
-.\clockmain.o: ../inc/tm4c123gh6pm.h
+.\clockmain.o: ..\../inc/tm4c123gh6pm.h
 .\clockmain.o: Sound.h
 .\clockmain.o: Timer.h
 .\clockmain.o: ST7735.h
