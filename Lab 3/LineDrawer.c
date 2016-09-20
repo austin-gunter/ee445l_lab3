@@ -45,7 +45,7 @@ void ST7735_Line(uint16_t x1, uint16_t y1, uint16_t x2, uint16_t y2, uint16_t co
 	int32_t deltaY = (y2 - y1);
 	int32_t currentY = y1;
 	int32_t currentX = x1;
-	if(abs(deltaX) < abs(deltaY) && (y1 > y2)){				// Steep positive slope/Steep negative slope near 12
+	if(abs(deltaX) <= abs(deltaY) && (y1 > y2)){				// Steep positive slope/Steep negative slope near 12
 		uint32_t temp = x1;
 		x1 = x2;
 		x2 = temp;
@@ -57,19 +57,19 @@ void ST7735_Line(uint16_t x1, uint16_t y1, uint16_t x2, uint16_t y2, uint16_t co
 			ST7735_DrawPixel(currentX, i, color);
 			}
 	}
-	else if(abs(deltaX) > abs(deltaY) && (x1 < x2)){		// Shallow positive slope/Shallow negative slope near 3
+	else if(abs(deltaX) >= abs(deltaY) && (x1 < x2)){		// Shallow positive slope/Shallow negative slope near 3
 		for(int i = x1; i <= x2; i++){
 				currentY = y1 + deltaY*(i - x1)/deltaX;
 				ST7735_DrawPixel(i, currentY, color);
 		}
 	}
-	else if(abs(deltaX) < abs(deltaY) && (y1 < y2)){				// Steep negative slope/Steep positive slope near 6
+	else if(abs(deltaX) <= abs(deltaY) && (y1 < y2)){				// Steep negative slope/Steep positive slope near 6
 		for(int i = y1; i <= y2; i++){
 			currentX = x1 + deltaX*(i - y1)/deltaY;
 			ST7735_DrawPixel(currentX, i, color);
 		}
 	}
-	else if(abs(deltaX) > abs(deltaY) && (x1 > x2)){				// Shallow positive slope/Shallow negative slope near 9
+	else if(abs(deltaX) >= abs(deltaY) && (x1 > x2)){				// Shallow positive slope/Shallow negative slope near 9
 		uint32_t temp = x1;
 		x1 = x2;
 		x2 = temp;

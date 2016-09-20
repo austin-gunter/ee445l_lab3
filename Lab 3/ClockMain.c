@@ -28,15 +28,13 @@ uint32_t HourCounter = 12;
 uint32_t PreviousMinute = 0;
 uint32_t PreviousHour = 12;
 uint32_t AlarmStatus = 0; 			// 0 by default. 1 = enabled
-uint32_t TimeCycleIndex = 0;		// to move through the Time Array when Cycling
-uint32_t ScreenCycleIndex = 0;	// to move along the screen when Cycling
-
+uint32_t CycleIndex = 0;		// to move through the Time Array when Cycling
 
 
 void Timer0A_Handler(void){
   TIMER0_ICR_R = TIMER_ICR_TATOCINT;    // acknowledge timer0A timeout
 	SecondCounter++;
-	if(SecondCounter == 60){
+	if(SecondCounter == 1){
 		PreviousHour = HourCounter;
 		SecondCounter = 0;
 		TimeArray[4] += 1;
@@ -55,7 +53,7 @@ void Timer0A_Handler(void){
 					TimeArray[1] = 0x30;
 					TimeArray[0] += 1;
 				}
-				if(TimeArray[1] == 0x32 && TimeArray[0] == 0x31){				// 11:59 to 12:00, am to pm or pm to am
+				if(TimeArray[1] == 0x32 && TimeArray[0] == 0x31){			// 11:59 to 12:00, am to pm or pm to am
 					if(TimeArray[6] == 0x61){
 						TimeArray[6] = 0x70;
 					}
@@ -63,7 +61,7 @@ void Timer0A_Handler(void){
 						TimeArray[6] = 0x61;
 					}
 				}
-				if(TimeArray[1] == 0x33 && TimeArray[0] == 0x31){				// 12:59 to 1:00
+				if(TimeArray[1] == 0x33 && TimeArray[0] == 0x31){			// 12:59 to 1:00
 					TimeArray[1] = 0x31;
 					TimeArray[0] = 0x30;
 					HourCounter = 1;
@@ -77,56 +75,71 @@ void Timer0A_Handler(void){
 	}
 
 void GPIOPortB_Handler(void){
-	if(GPIO_PORTB_RIS_R&0x08){						// Arm/Disarm Alarm Button
+/////////////////////////////////////////////////////////////////////////////////
+//	Arm/Disarm Buttom
+//	Can be pushed at any time to arm or disarm the alarm
+//	Can be pushed when the alarm is sounding to turn the alarm off
+/////////////////////////////////////////////////////////////////////////////////
+	if(GPIO_PORTB_RIS_R&0x08){
 		GPIO_PORTB_ICR_R = 0x08;
 		if(AlarmStatus == 0){
-			AlarmStatus ^= 1;
+			AlarmStatus = 1;
 			ST7735_SetCursor(17, 4);
-			ST7735_SetTextColor(ST7735_BLACK);
-			ST7735_OutString("OFF");
-			ST7735_SetTextColor(ST7735_YELLOW);
+			ST7735_OutString("   ");
 			ST7735_SetCursor(15, 4);
 			ST7735_OutString("ON");
 		}
 		else{
-			AlarmStatus ^= 1;
+			AlarmStatus = 0;
 			ST7735_SetCursor(15, 4);
-			ST7735_SetTextColor(ST7735_BLACK);
-			ST7735_OutString("ON");
-			ST7735_SetTextColor(ST7735_YELLOW);
+			ST7735_OutString("  ");
 			ST7735_SetCursor(17, 4);
 			ST7735_OutString("OFF");
 		}
 	}
-	else if(GPIO_PORTB_RIS_R&0x01){					// Edit Button
+/////////////////////////////////////////////////////////////////////////////////
+//	Edit Buttom
+//	Can be pushed to enter or exit edit mode
+//	While edit mode is active, the Cycle/Increment buttons should be working
+/////////////////////////////////////////////////////////////////////////////////
+	else if(GPIO_PORTB_RIS_R&0x01){
 		GPIO_PORTB_ICR_R = 0x01;
 		PreviousHour = HourCounter;
 		PreviousMinute = MinuteCounter;
 		while((GPIO_PORTB_RIS_R&0x01) == 0){
+			if(CycleIndex < 7){
+				ST7735_SetCursor((CursorArray[0] + CycleIndex), 1);						// print a ^ where the cursor is currently at.
+				ST7735_OutChar(0x5E);																
+			}
+			else{
+				ST7735_SetCursor((CursorArray[2] + CycleIndex - 7), 3);
+				ST7735_OutChar(0x5E);	
+			}
 			if(GPIO_PORTB_RIS_R&0x08){
 				GPIO_PORTB_ICR_R = 0x08;
 				if(AlarmStatus == 0){
 					AlarmStatus ^= 1;
 					ST7735_SetCursor(17, 4);
-					ST7735_SetTextColor(ST7735_BLACK);
-					ST7735_OutString("OFF");
-					ST7735_SetTextColor(ST7735_YELLOW);
+					ST7735_OutString("   ");
 					ST7735_SetCursor(15, 4);
 					ST7735_OutString("ON");
 				}
 				else{
 					AlarmStatus ^= 1;
 					ST7735_SetCursor(15, 4);
-					ST7735_SetTextColor(ST7735_BLACK);
-					ST7735_OutString("ON");
-					ST7735_SetTextColor(ST7735_YELLOW);
+					ST7735_OutString("  ");
 					ST7735_SetCursor(17, 4);
 					ST7735_OutString("OFF");
 				}
 			}
-			if(GPIO_PORTB_RIS_R&0x04){					// Increment Button
-				if(TimeCycleIndex < 5){						// If Index is in the TimeArray
-					TimeArray[TimeCycleIndex] += 1;
+/////////////////////////////////////////////////////////////////////////////////
+//	Increment Buttom
+//	Used to increment values in Time/Alarm arrays and on the screen
+//	Should only do anything when in edit mode
+/////////////////////////////////////////////////////////////////////////////////
+			if(GPIO_PORTB_RIS_R&0x04){
+				if(CycleIndex < 5){								// If Index is in the TimeArray
+					TimeArray[CycleIndex] += 1;
 					if(TimeArray[0] == 0x32 || (TimeArray[1] > 0x32 && TimeArray[0] == 0x31)){		// If trying to increment 1st digit past 2
 						TimeArray[0] = 0x30;																												// Or if trying to increment 1st digit to 1 when first digit is > 2
 					}
@@ -135,14 +148,17 @@ void GPIOPortB_Handler(void){
 							TimeArray[1] = 0x30;
 						}
 					}
-					if(TimeArray[1] == 0x3A){				// Carry over when second digit hits 9
+					if(TimeArray[1] == 0x3A){				// Carry over when second digit passes 9
 						TimeArray[1] = 0x31;
 					}
-					if(TimeArray[3] == 6){
-						///////////////////////////////////////////////////////////////////////continue working
+					if(TimeArray[3] == 0x36){					// Carry over when third digit passes 5
+						TimeArray[3] = 0;
+					}
+					if(TimeArray[4] == 0x3A){
+						TimeArray[4] = 0;
 					}
 				}
-				if(TimeCycleIndex == 6){					// If Index is on the a/p of "am" or "pm"
+				if(CycleIndex == 6){								// If Index is on the a/p of "am" or "pm"
 					if(TimeArray[6] == 0x61){
 						TimeArray[6] = 0x70;
 					}
@@ -150,38 +166,79 @@ void GPIOPortB_Handler(void){
 						TimeArray[6] = 0x61;
 					}
 				}
-				if(TimeCycleIndex > 6 && TimeCycleIndex < 13){		// If Index is in the AlarmArray
-					AlarmArray[TimeCycleIndex - 7] += 1;
+				if(CycleIndex > 6 && CycleIndex < 13){		// If Index is in the AlarmArray
+					AlarmArray[CycleIndex - 7] += 1;
+					if(AlarmArray[0] == 0x32 || (AlarmArray[1] > 0x32 && AlarmArray[0] == 0x31)){	// If trying to increment 1st digit past 2
+						AlarmArray[0] = 0x30;																												// Or if trying to increment 1st digit to 1 when first digit is > 2
+					}
+					if(AlarmArray[1] > 0x32){					// If trying to increment 2nd digit past 2 when 1st digit is 0
+						if(AlarmArray[0] == 0x31){
+							AlarmArray[1] = 0x30;
+						}
+					}
+					if(AlarmArray[1] == 0x3A){				// Carry over when second digit passes 9
+						AlarmArray[1] = 0x31;
+					}
+					if(AlarmArray[3] == 0x36){				// Carry over when third digit passes 5
+						AlarmArray[3] = 0;
+					}
+					if(AlarmArray[4] == 0x3A){
+						AlarmArray[4] = 0;
+					}
 				}
-			}
-			if(GPIO_PORTB_RIS_R&0x02){					// Cycle Button
-				TimeCycleIndex += 1;							// Cycle 0-6 for Time Array, skipping indices 2 and 5 (colon and space)
-				ScreenCycleIndex += 1;						// Cycle 7-13 for Alarm Array, skipping 9 and 12 (colon and space).
-				if(TimeCycleIndex == 2 || TimeCycleIndex == 5 || TimeCycleIndex == 9 || TimeCycleIndex == 12){
-					TimeCycleIndex += 1;
-					ScreenCycleIndex += 1;
+				if(CycleIndex == 13){								// If Index is on the "a/p" of Alarm
+					if(AlarmArray[6] == 0x61){
+						AlarmArray[6] = 0x70;
+					}
+					else{
+						AlarmArray[6] = 0x61;
+					}
 				}
-				if(TimeCycleIndex == 14){					// If index hits 14, restart at index 0
-					TimeCycleIndex = 0;
-					ScreenCycleIndex += 0;
-				}								
 				
+				if(CycleIndex < 7){															// Finished checking which button incremented. Now print on screen
+					ST7735_OutChar(TimeArray[CycleIndex]);
+				}
+				else{
+					ST7735_OutChar(AlarmArray[CycleIndex - 7]);
+				}
 			}
-			
-			
-			
-			
-			
-			
-			
-			
+/////////////////////////////////////////////////////////////////////////////////
+//	Cycle Buttom
+//	Used to switch between places on the screen while indexing through the arrays
+//	Should only do anything when in edit mode
+/////////////////////////////////////////////////////////////////////////////////
+			if(GPIO_PORTB_RIS_R&0x02){					// Cycle Button
+				if(CycleIndex < 7){
+					ST7735_SetCursor((CursorArray[0] + CycleIndex), 1);						// clear the current ^
+					ST7735_OutChar(0x20);																
+				}
+				else{
+					ST7735_SetCursor((CursorArray[2] + CycleIndex - 7), 3);
+					ST7735_OutChar(0x20);	
+				}
+				
+				CycleIndex += 1;							// Cycle 0-6 for Time Array, 7-13 for Alarm Array									
+				if(CycleIndex == 2 || CycleIndex == 5 || CycleIndex == 9 || CycleIndex == 12){		// skip indices 2, 5, 9, and 12 because colons/spaces
+					CycleIndex += 1;
+				}
+				if(CycleIndex == 14){					// If index hits 14, restart at index 0
+					CycleIndex = 0;
+				}								
+			}		
 		}
 		GPIO_PORTB_ICR_R = 0x01;
-		HourCounter = (TimeArray[0]*10) + TimeArray[1];
-		MinuteCounter = (TimeArray[3]*10) + TimeArray[4];
+		HourCounter = ((TimeArray[0] - 0x30)*10) + (TimeArray[1] - 0x30);		// Time array has ascii values, so -0x30 to get to decimal
+		MinuteCounter = ((TimeArray[3] - 0x30)*10) + (TimeArray[4] - 0x30);
 		DrawHands(MinuteX, MinuteY, HourX, HourY, HourCounter, MinuteCounter, PreviousHour, PreviousMinute);
-		TimeCycleIndex = 0;				// reset cycle indices for next edit mode
-		ScreenCycleIndex = 8;
+		if(CycleIndex < 7){
+			ST7735_SetCursor((CursorArray[0] + CycleIndex), 3);						// clear the ^
+			ST7735_OutChar(0x5E);																
+		}
+		else{
+			ST7735_SetCursor((CursorArray[2] + CycleIndex - 7), 3);
+			ST7735_OutChar(0x5E);	
+		}
+		CycleIndex = 0;				// reset cycle indices for next edit mode
 		SecondCounter = -1;		// -1 because SecondCounter will immediately increment when leaving this interrupt
 	}
 }
