@@ -16,7 +16,7 @@ I (C:\Keil\ARM\ARMCC\include\stdint.h)(0x51C87C24)
 I (..\Lab 1\ST7735.h)(0x57C858EB)
 I (..\../inc/tm4c123gh6pm.h)(0x5388C2DA)
 F (..\Lab 1\ST7735.h)(0x57C858EB)()
-F (.\ClockMain.c)(0x57E0C7E2)(-c --cpu Cortex-M4 -D__EVAL -g -O0 --apcs=interwork --split_sections --signed_chars -I.. -I..\..\.. --c99-I C:\Keil\ARM\RV31\INC-I C:\Keil\ARM\CMSIS\Include-I C:\Keil\ARM\Inc\Luminary-Drvmdk -DPART_LM4F120H5QR-o .\clockmain.o --omf_browse .\clockmain.crf --depend .\clockmain.d)
+F (.\ClockMain.c)(0x57E164E9)(-c --cpu Cortex-M4 -D__EVAL -g -O0 --apcs=interwork --split_sections --signed_chars -I.. -I..\..\.. --c99-I C:\Keil\ARM\RV31\INC-I C:\Keil\ARM\CMSIS\Include-I C:\Keil\ARM\Inc\Luminary-Drvmdk -DPART_LM4F120H5QR-o .\clockmain.o --omf_browse .\clockmain.crf --depend .\clockmain.d)
 I (C:\Keil\ARM\ARMCC\include\stdint.h)(0x51C87C24)
 I (C:\Keil\ARM\ARMCC\include\stdio.h)(0x51C87C24)
 I (C:\Keil\ARM\ARMCC\include\string.h)(0x51C87C24)
@@ -37,7 +37,7 @@ I (C:\Keil\ARM\ARMCC\include\stdint.h)(0x51C87C24)
 I (..\../inc/tm4c123gh6pm.h)(0x5388C2DA)
 I (ST7735.h)(0x57E09D79)
 I (LineDrawer.h)(0x57E09D79)
-F (.\Sound.c)(0x57E0C303)(-c --cpu Cortex-M4 -D__EVAL -g -O0 --apcs=interwork --split_sections --signed_chars -I.. -I..\..\.. --c99-I C:\Keil\ARM\RV31\INC-I C:\Keil\ARM\CMSIS\Include-I C:\Keil\ARM\Inc\Luminary-Drvmdk -DPART_LM4F120H5QR-o .\sound.o --omf_browse .\sound.crf --depend .\sound.d)
+F (.\Sound.c)(0x57E164AC)(-c --cpu Cortex-M4 -D__EVAL -g -O0 --apcs=interwork --split_sections --signed_chars -I.. -I..\..\.. --c99-I C:\Keil\ARM\RV31\INC-I C:\Keil\ARM\CMSIS\Include-I C:\Keil\ARM\Inc\Luminary-Drvmdk -DPART_LM4F120H5QR-o .\sound.o --omf_browse .\sound.crf --depend .\sound.d)
 I (Sound.h)(0x57E09D79)
 I (C:\Keil\ARM\ARMCC\include\stdint.h)(0x51C87C24)
 I (..\../inc/tm4c123gh6pm.h)(0x5388C2DA)

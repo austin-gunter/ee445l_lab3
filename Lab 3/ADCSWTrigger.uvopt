@@ -274,7 +274,7 @@
         <AscS3>0</AscS3>
         <aSer3>0</aSer3>
         <eProf>0</eProf>
-        <aLa>0</aLa>
+        <aLa>1</aLa>
         <aPa1>0</aPa1>
         <AscS4>0</AscS4>
         <aSer4>0</aSer4>
@@ -288,18 +288,17 @@
       <LogicAnalyzers>
         <Wi>
           <IntNumber>0</IntNumber>
-          <FirstString>(*((volatile uint32_t *)0x40025008))</FirstString>
-          <SecondString>FF00000000000000000000000000E0FFFFFFEF4100000000000000000000000000000000282A2828766F6C6174696C652075696E7433325F74202A2930783430303235303038292900000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000100000001000000000000000000D83F10000000000000000000000000000000000000006C020000</SecondString>
-        </Wi>
-        <Wi>
-          <IntNumber>1</IntNumber>
-          <FirstString>(*((volatile uint32_t *)0x40025010))</FirstString>
-          <SecondString>0080000000000000000000000000E0FFFFFFEF4100000000000000000000000000000000282A2828766F6C6174696C652075696E7433325F74202A2930783430303235303130292900000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000100000002000000000000000000E43F10000000000000000000000000000000000000006C020000</SecondString>
+          <FirstString>(*((volatile uint32_t *)0x40006040))</FirstString>
+          <SecondString>0080000000000000000000000000E0FFFFFFEF4101000000000000000000000000000000282A2828766F6C6174696C652075696E7433325F74202A2930783430303036303430292900000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000100000001000000000000000000F03F1000000000000000000000000000000000000000F0180000</SecondString>
         </Wi>
       </LogicAnalyzers>
       <SystemViewers>
         <Entry>
           <Name>System Viewer\GPIOB</Name>
+          <WinId>35904</WinId>
+        </Entry>
+        <Entry>
+          <Name>System Viewer\GPIOC</Name>
           <WinId>35905</WinId>
         </Entry>
       </SystemViewers>
@@ -398,10 +397,10 @@
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <Focus>0</Focus>
-      <ColumnNumber>4</ColumnNumber>
+      <ColumnNumber>23</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
-      <TopLine>263</TopLine>
-      <CurrentLine>293</CurrentLine>
+      <TopLine>30</TopLine>
+      <CurrentLine>46</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>.\ClockMain.c</PathWithFileName>
       <FilenameWithoutPath>ClockMain.c</FilenameWithoutPath>
@@ -446,7 +445,7 @@
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <Focus>0</Focus>
-      <ColumnNumber>58</ColumnNumber>
+      <ColumnNumber>51</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
       <TopLine>1</TopLine>
       <CurrentLine>15</CurrentLine>
@@ -462,10 +461,10 @@
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <Focus>0</Focus>
-      <ColumnNumber>51</ColumnNumber>
+      <ColumnNumber>0</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
-      <TopLine>0</TopLine>
-      <CurrentLine>0</CurrentLine>
+      <TopLine>1</TopLine>
+      <CurrentLine>1</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>.\Timer.c</PathWithFileName>
       <FilenameWithoutPath>Timer.c</FilenameWithoutPath>
@@ -512,7 +511,7 @@
       <Focus>0</Focus>
       <ColumnNumber>2</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
-      <TopLine>590</TopLine>
+      <TopLine>589</TopLine>
       <CurrentLine>633</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>.\Bitmap.c</PathWithFileName>

@@ -10,6 +10,8 @@
 #include "ST7735.h"
 
 #define PB4								(*((volatile uint32_t *)0x40005040))
+#define PC4								(*((volatile uint32_t *)0x40006040))
+#define PF1								(*((volatile uint32_t *)0x40025008))
 
 extern uint32_t MinuteX[];
 extern uint32_t MinuteY[];
@@ -298,7 +300,10 @@ int main(void){
 			if((strcmp(TimeArray, AlarmArray) == 0) && (AlarmStatus == 1)){
 				ST7735_SetCursor(0, 3);
 				ST7735_OutString("Alarm!!");
-				while(AlarmStatus == 1){PB4 ^= 0x10;} // Wait until alarm turns off
+				while(AlarmStatus == 1){					// Wait until alarm turns off
+					PC4 ^= 0x10;
+					for(int i = 0; i < 12500; i++){}
+				}				
 				ST7735_SetCursor(0, 3);
 				ST7735_OutString("       ");
 			}
